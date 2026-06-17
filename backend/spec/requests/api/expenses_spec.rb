@@ -85,5 +85,25 @@ RSpec.describe "Api::Expenses", type: :request do
         expect(response).to have_http_status(:created)
       end
     end
+
+    it "with a future date" do
+      future_date = Date.today + 1.day
+      invalid_params = {
+        expense: {
+          description: "Future expense",
+          amount: 75.00,
+          category_id: food_category.id,
+          date: future_date
+        }
+      }
+
+      expect {
+        post "/api/expenses", params: invalid_params, as: :json
+      }.not_to change(Expense, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      json = JSON.parse(response.body)
+      expect(json["errors"]).to include("Date cannot be in the future")
+    end
   end
 end
