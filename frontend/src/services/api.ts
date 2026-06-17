@@ -74,6 +74,9 @@ export async function createCategory(data: CategoryFormData): Promise<Expense> {
  * Create a new expense
  */
 export async function createExpense(data: ExpenseFormData): Promise<Expense> {
+  // Convert category name to category_id
+  const categories = await fetchCategories();
+  const category = categories.find((c) => c.name === data.category);
 
   const expenseData = {
     description: data.description,
