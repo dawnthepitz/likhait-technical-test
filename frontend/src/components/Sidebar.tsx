@@ -93,7 +93,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     alignItems: "center",
     justifyContent: isCollapsed ? "center" : "flex-start",
     gap: "16px",
-    background: currentPage === "history" ? COLORS.primary.p03 : "transparent",
     border: "none",
     cursor: "pointer",
     fontSize: "18px",
@@ -101,6 +100,16 @@ const Sidebar: React.FC<SidebarProps> = ({
     color: COLORS.primary.p09,
     textAlign: "left",
     transition: "background 0.2s",
+  };
+
+  const historyButtonStyle: React.CSSProperties = {
+    ...navItemStyle,
+    background: currentPage === "history" ? COLORS.primary.p02 : "transparent",
+  };
+
+  const categoriesButtonStyle: React.CSSProperties = {
+    ...navItemStyle,
+    background: currentPage === "categories" ? COLORS.primary.p02 : "transparent",
   };
 
   const navTextStyle: React.CSSProperties = {
@@ -140,7 +149,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       <nav style={navStyle}>
         <button
-          style={navItemStyle}
+          style={historyButtonStyle}
           onClick={() => onNavigate?.("history")}
           onMouseEnter={(e) => {
             if (currentPage !== "history") {
@@ -167,6 +176,35 @@ const Sidebar: React.FC<SidebarProps> = ({
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <span style={navTextStyle}>History</span>
+        </button>
+        <button
+          style={categoriesButtonStyle}
+          onClick={() => onNavigate?.("categories")}
+          onMouseEnter={(e) => {
+            if (currentPage !== "categories") {
+              e.currentTarget.style.background = COLORS.primary.p02;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (currentPage !== "categories") {
+              e.currentTarget.style.background = "transparent";
+            }
+          }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <span style={navTextStyle}>Categories</span>
         </button>
       </nav>
     </aside>

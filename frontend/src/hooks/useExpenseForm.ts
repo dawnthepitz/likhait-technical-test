@@ -2,9 +2,11 @@
  * Custom hook for managing expense form state and validation
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ExpenseFormData } from "../types";
 import { formatDate } from "../utils/expenseUtils";
+import { fetchCategories } from "../services/api";
+import { Category } from "../types";
 
 interface UseExpenseFormProps {
   initialData?: Partial<ExpenseFormData>;
@@ -12,6 +14,22 @@ interface UseExpenseFormProps {
 }
 
 export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const fetchCategoriesData = async () => {
+    try {
+      const data = await fetchCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchCategoriesData();
+  }, []);
+
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: initialData?.amount || "",
     description: initialData?.description || "",
@@ -89,6 +107,7 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
   };
 
   return {
+    categories,
     formData,
     errors,
     isSubmitting,
