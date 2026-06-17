@@ -21,6 +21,8 @@ export function ExpenseForm({
   onCancel,
   submitLabel = "Add Expense",
 }: ExpenseFormProps) {
+
+  const CURRENT_DATE = new Date().toISOString().split('T')[0];
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
       initialData,
@@ -84,6 +86,7 @@ export function ExpenseForm({
         type="date"
         value={formData.date}
         onChange={(e) => handleChange("date", e.target.value)}
+        max={CURRENT_DATE}
         error={errors.date}
         fullWidth
         required
