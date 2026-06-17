@@ -7,6 +7,10 @@ export interface Category {
   name: string;
 }
 
+export interface CategoryFormData {
+  name: string;
+}
+
 export interface Expense {
   id: number;
   amount: number;

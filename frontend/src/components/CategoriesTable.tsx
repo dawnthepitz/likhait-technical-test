@@ -5,6 +5,7 @@
 import React from "react";
 import { Category } from "../types";
 import { COLORS } from "../constants/colors";
+import { getCategoryEmoji } from "../constants/categoryEmojis";
 
 interface CategoriesTableProps {
   categories: Category[];
@@ -64,15 +65,24 @@ export function CategoriesTable({
       <table style={tableStyle}>
         <thead style={theadStyle}>
           <tr>
-            <th style={thStyle}>ID</th>
             <th style={thStyle}>Name</th>
           </tr>
         </thead>
         <tbody>
           {categories.map((category) => (
             <tr key={category.id}>
-              <td style={tdStyle}>{category.id}</td>
-              <td style={tdStyle}>{category.name}</td>
+              <td style={tdStyle}>
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span>{getCategoryEmoji(category.name)}</span>
+                  <span>{category.name}</span>
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { fetchCategories } from "../services/api";
+import { createCategory, fetchCategories } from "../services/api";
 import { Modal, Button } from "../vibes";
 import { COLORS } from "../constants/colors";
 import { CategoriesTable } from "../components/CategoriesTable";
-import { Category } from "../types";
+import { CategoryForm } from "../components/CategoryForm";
+import { Category, CategoryFormData } from "../types";
 
 const CategoryPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -16,7 +17,7 @@ const CategoryPage: React.FC = () => {
       const data = await fetchCategories();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching expenses:", error);
+      console.error("Error fetching categories:", error);
     } finally {
       setLoading(false);
     }
@@ -26,15 +27,15 @@ const CategoryPage: React.FC = () => {
     fetchCategoriesData();
   }, []);
 
-  // const handleAddExpense = async (data: ExpenseFormData) => {
-  //   try {
-  //     await createExpense(data);
-  //     setIsModalOpen(false);
-  //   } catch (error) {
-  //     console.error("Error creating expense:", error);
-  //     throw error;
-  //   }
-  // };
+  const handleAddCategory = async (data: CategoryFormData) => {
+    try {
+      await createCategory(data);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error creating category:", error);
+      throw error;
+    }
+  };
 
   const pageStyle: React.CSSProperties = {
     padding: "48px 64px",
@@ -95,16 +96,17 @@ const CategoryPage: React.FC = () => {
         )}
       </div>
 
-      {/* <Modal
+      <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add New Expense"
+        title="Add New Category"
       >
-        <ExpenseForm
-          onSubmit={handleAddExpense}
+        <CategoryForm
+          initialData={{ name: "" }}
+          onSubmit={handleAddCategory}
           onCancel={() => setIsModalOpen(false)}
         />
-      </Modal> */}
+      </Modal>
     </div>
   );
 };
