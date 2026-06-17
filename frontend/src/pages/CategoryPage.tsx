@@ -31,6 +31,7 @@ const CategoryPage: React.FC = () => {
     try {
       await createCategory(data);
       setIsModalOpen(false);
+      fetchCategoriesData();
     } catch (error) {
       console.error("Error creating category:", error);
       throw error;
